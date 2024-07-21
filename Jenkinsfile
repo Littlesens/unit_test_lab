@@ -17,13 +17,18 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh './vendor/bin/phpunit --log-junit logs/unitreport.xml -c tests/phpunit.xml tests'
+                script {
+                    // Navigate to the directory containing phpunit
+                    dir('jenkins-phpunit-test') {
+                        sh './vendor/bin/phpunit --log-junit logs/unitreport.xml -c tests/phpunit.xml tests'
+                    }
+                }
             }
         }
     }
     post {
         always {
-            junit testResults: 'logs/unitreport.xml'
+            junit testResults: 'jenkins-phpunit-test/logs/unitreport.xml'
         }
     }
 }
