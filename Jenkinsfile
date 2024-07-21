@@ -7,7 +7,12 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'composer install'
+                script {
+                    // Navigate to the directory containing composer.json
+                    dir('jenkins-phpunit-test') {
+                        sh 'composer install'
+                    }
+                }
             }
         }
         stage('Test') {
